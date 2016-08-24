@@ -13,6 +13,8 @@ import javafx.scene.text.Text;
  */
 public class ScraperTab extends Tab {
 
+    private TextField urlInput = new TextField();
+
     public ScraperTab() {
         super("Ny bevakning");
         GridPane gp = new GridPane();
@@ -21,7 +23,6 @@ public class ScraperTab extends Tab {
         gp.setConstraints(urlAndSounds, 0, 0);
         gp.getChildren().add(urlAndSounds);
 
-        TextField urlInput = new TextField();
         ComboBox<String> sounds = new ComboBox<String>();
         urlAndSounds.getChildren().add(new Text("Address"));
         urlAndSounds.getChildren().add(urlInput);

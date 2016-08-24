@@ -15,16 +15,10 @@ import java.util.ArrayList;
 public class MainGuiController {
 
     @FXML
-    private Button tabButton;
-    @FXML
     private TabPane tabPane;
-
-    private ArrayList<Tab> tabs = new ArrayList<Tab>();
 
     @FXML
     private void addScraperTab(ActionEvent event) {
-       System.out.println("Clicked");
-
        Tab tab = new ScraperTab();
        tabPane.getTabs().add(tabPane.getTabs().size() - 1, tab);
     }
