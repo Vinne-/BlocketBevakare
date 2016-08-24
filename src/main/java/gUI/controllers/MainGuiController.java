@@ -1,5 +1,6 @@
 package gUI.controllers;
 
+import gUI.tab.ScraperTab;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,13 +22,13 @@ public class MainGuiController {
     private ArrayList<Tab> tabs = new ArrayList<Tab>();
 
     @FXML
-    private void addTab(ActionEvent event) {
+    private void addScraperTab(ActionEvent event) {
        System.out.println("Clicked");
 
-       Tab tab = new Tab();
-       tab.setText("test");
+       Tab tab = new ScraperTab();
        tabPane.getTabs().add(tabPane.getTabs().size() - 1, tab);
     }
+
 
 
 }
