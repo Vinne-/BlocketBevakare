@@ -1,5 +1,6 @@
 package gUI.controllers;
 
+import Entites.SmallAd;
 import bevakare.BlocketScraper;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
@@ -9,29 +10,45 @@ import org.apache.commons.validator.routines.UrlValidator;
 
 import java.awt.*;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 /**
  * Created by simpa2k on 2016-08-24.
  */
 public class ScraperTabController {
-    private static final String baseUrl = "https://www.blocket.se/";
+    private static final String BASE_URL = "https://www.blocket.se/";
+    private boolean run = false;
+    private int scrapeInterval = 60;
+
+    //private ArrayList<Notification> notifications = new ArrayList<>();
+    private ArrayList<SmallAd> smallAds = new ArrayList<>();
 
     @FXML
-    TextField urlInput;
+    private TextField urlInput;
 
     @FXML
     private void watch() {
         String url = urlInput.getText();
         if(urlIsValid(url)) {
+            run = true;
+
             BlocketScraper scraper = new BlocketScraper(url);
+
+            Timer timer = new Timer();
+            int delay = 0;
+            int interval = 30 * 1000;
+
+            timer.scheduleAtFixedRate(new Scrape(scraper), delay, interval);
         } else {
             showInvalidUrlDialog();
         }
     }
 
     private boolean urlIsValid(String url) {
-        boolean matchesBaseUrl = Pattern.matches(baseUrl + ".*", url);
+        boolean matchesBaseUrl = Pattern.matches(BASE_URL + ".*", url);
         UrlValidator urlValidator = new UrlValidator();
 
         return (urlValidator.isValid(url)) && (matchesBaseUrl);
@@ -56,6 +73,40 @@ public class ScraperTabController {
                 desktop.browse(new URI(url));
             } catch(Exception e) {
                 e.printStackTrace();
+            }
+        }
+
+    }
+
+    private class Scrape extends TimerTask {
+
+        private BlocketScraper scraper;
+
+        public Scrape(BlocketScraper scraper) {
+            this.scraper = scraper;
+        }
+
+        @Override
+        public void run() {
+            scraper.scrapeNewest(o -> {
+                SmallAd smallAd = (SmallAd) o;
+                System.out.println(smallAd.getDatetime());
+
+                checkAdDatetime(smallAd);
+            });
+        }
+
+        private void checkAdDatetime(SmallAd smallAd) {
+
+            if(smallAds.isEmpty() || smallAd.compareTo(smallAds.get(smallAds.size() - 1)) > 0) {
+                /*try {
+                    scraper.scrapeUntil(smallAd.getDatetime());
+                } catch(NullPointerException e) {
+                    //This might be necessary if a SocketTimoutException wasn't handled in BlocketScraper
+                    e.printStackTrace();
+                }*/
+            } else {
+
             }
         }
 
