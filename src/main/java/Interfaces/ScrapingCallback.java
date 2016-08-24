@@ -5,6 +5,6 @@ package Interfaces;
  */
 public interface ScrapingCallback {
 
-    void onScrapingCallback();
+    void onScrapingCallback(Object o);
 
 }
