@@ -1,12 +1,14 @@
 package gUI.controllers;
 
-import gUI.tab.ScraperTab;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -19,8 +21,12 @@ public class MainGuiController {
 
     @FXML
     private void addScraperTab(ActionEvent event) {
-       Tab tab = new ScraperTab();
-       tabPane.getTabs().add(tabPane.getTabs().size() - 1, tab);
+        try {
+            Tab tab = FXMLLoader.load(getClass().getClassLoader().getResource("FXML/scraperTab.fxml"));
+            tabPane.getTabs().add(tabPane.getTabs().size() - 1, tab);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
