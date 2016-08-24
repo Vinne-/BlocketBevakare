@@ -28,7 +28,7 @@
       </MenuBar>
    </top>
    <center>
-      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" fx:id="tabPane">
         <tabs>
           <Tab text="Untitled Tab 1">
                <content>
@@ -55,10 +55,19 @@
                               <ComboBox prefWidth="150.0" />
                            </children>
                         </VBox>
+                        <Button fx:id="tabButton" mnemonicParsing="false" text="Add tab" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                </content>
           </Tab>
+            <Tab>
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+               <graphic>
+                  <Button mnemonicParsing="false" text="+" onAction="#addTab"/>
+               </graphic>
+            </Tab>
         </tabs>
       </TabPane>
    </center>
