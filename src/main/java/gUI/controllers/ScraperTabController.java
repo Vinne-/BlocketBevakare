@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
-import notification.Notification;
 import org.apache.commons.validator.routines.UrlValidator;
 
 import java.awt.*;
@@ -39,16 +38,10 @@ public class ScraperTabController {
             BlocketScraper scraper = new BlocketScraper(url);
 
             Timer timer = new Timer();
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    scraper.scrapeNewest(o -> {
-                        SmallAd smallAd = (SmallAd) o;
-                        System.out.println(smallAd.getDatetime());
-                        checkAdDateTime(smallAd);
-                    });
-                }
-            }, 0, 60 * 1000);
+            int delay = 0;
+            int interval = 60 * 1000;
+
+            timer.scheduleAtFixedRate(new Scrape(scraper), delay, interval);
         } else {
             showInvalidUrlDialog();
         }
@@ -70,13 +63,6 @@ public class ScraperTabController {
         dialog.show();
     }
 
-    private void checkAdDateTime(SmallAd smallAd) {
-
-        if(smallAds.isEmpty() || smallAd.compareTo(smallAds.get(smallAds.size() - 1)) > 0) {
-            //scraper.scrapeUntil(smallAd.getDatetime());
-        }
-    }
-
     @FXML
     private void toSite() {
         Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
@@ -87,6 +73,31 @@ public class ScraperTabController {
                 desktop.browse(new URI(url));
             } catch(Exception e) {
                 e.printStackTrace();
+            }
+        }
+
+    }
+
+    private class Scrape extends TimerTask {
+
+        private BlocketScraper scraper;
+
+        public Scrape(BlocketScraper scraper) {
+            this.scraper = scraper;
+        }
+
+        @Override
+        public void run() {
+            scraper.scrapeNewest(o -> {
+                SmallAd smallAd = (SmallAd) o;
+                checkAdDatetime(smallAd);
+            });
+        }
+
+        private void checkAdDatetime(SmallAd smallAd) {
+
+            if(smallAds.isEmpty() || smallAd.compareTo(smallAds.get(smallAds.size() - 1)) > 0) {
+                //scraper.scrapeUntil(smallAd.getDatetime());
             }
         }
 
