@@ -3,13 +3,10 @@ package gUI.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by simpa2k on 2016-08-24.
