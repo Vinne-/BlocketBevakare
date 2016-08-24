@@ -39,7 +39,7 @@ public class ScraperTabController {
 
             Timer timer = new Timer();
             int delay = 0;
-            int interval = 60 * 1000;
+            int interval = 30 * 1000;
 
             timer.scheduleAtFixedRate(new Scrape(scraper), delay, interval);
         } else {
@@ -90,6 +90,8 @@ public class ScraperTabController {
         public void run() {
             scraper.scrapeNewest(o -> {
                 SmallAd smallAd = (SmallAd) o;
+                System.out.println(smallAd.getDatetime());
+
                 checkAdDatetime(smallAd);
             });
         }
@@ -97,7 +99,14 @@ public class ScraperTabController {
         private void checkAdDatetime(SmallAd smallAd) {
 
             if(smallAds.isEmpty() || smallAd.compareTo(smallAds.get(smallAds.size() - 1)) > 0) {
-                //scraper.scrapeUntil(smallAd.getDatetime());
+                /*try {
+                    scraper.scrapeUntil(smallAd.getDatetime());
+                } catch(NullPointerException e) {
+                    //This might be necessary if a SocketTimoutException wasn't handled in BlocketScraper
+                    e.printStackTrace();
+                }*/
+            } else {
+
             }
         }
 
