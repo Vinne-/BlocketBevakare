@@ -2,6 +2,8 @@ package notification;
 
 import Entites.SmallAd;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -12,8 +14,12 @@ public class Notification {
     private Date dateTime;
     private List<SmallAd> smallAdList;
 
-    public Notification(Date dateTime, List<SmallAd> smallAdList) {
-        this.dateTime = dateTime;
+    public Notification(List<SmallAd> smallAdList) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date currentDate = new Date();
+        dateFormat.format(currentDate);
+
+        this.dateTime = currentDate;
         this.smallAdList = smallAdList;
     }
 

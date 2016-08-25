@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by Vincent on 2016-08-24.
  */
-public class SmallAd implements Comparable<SmallAd> {
+public class SmallAd {
 
     private String id;
     private String title;
@@ -42,10 +42,5 @@ public class SmallAd implements Comparable<SmallAd> {
     @Override
     public String toString() {
         return String.format("id: %s, title: %s, datetime: %s, price: %2d", id, title, datetime.toString(), price);
-    }
-
-    @Override
-    public int compareTo(SmallAd o) {
-       return datetime.compareTo(o.datetime);
     }
 }

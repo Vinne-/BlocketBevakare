@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Tab text="Untitled Tab 1" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gUI.controllers.ScraperTabController">
+<Tab text="Untitled Tab 1" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gUI.controllers.ScraperTabController" fx:id="scraperTab">
     <content>
         <GridPane prefHeight="338.0" prefWidth="559.0">
             <columnConstraints>

@@ -5,19 +5,16 @@ import bevakare.BlocketScraper;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import notification.Notification;
 import org.apache.commons.validator.routines.UrlValidator;
 
 import java.awt.Desktop;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -32,6 +29,9 @@ public class ScraperTabController implements Initializable {
     private Timer timer;
     //private ArrayList<Notification> notifications = new ArrayList<>();
     private ArrayList<SmallAd> smallAds = new ArrayList<>();
+
+    @FXML
+    private Tab scraperTab;
 
     @FXML
     private TextField urlInput;
@@ -102,6 +102,13 @@ public class ScraperTabController implements Initializable {
 
     }
 
+    protected void notify(List<SmallAd> ads) {
+        Notification notification = new Notification(ads);
+
+        scraperTab.setStyle("-fx-border-color:green");
+        scraperTab.setStyle("-fx-background-color:green");
+    }
+
     private class Scrape extends TimerTask {
 
         private BlocketScraper scraper;
@@ -121,14 +128,18 @@ public class ScraperTabController implements Initializable {
         }
 
         private void checkAdDatetime(SmallAd smallAd) {
+            SmallAd mostRecentSmallAd = smallAds.isEmpty() ? null : smallAds.get(smallAds.size() - 1);
 
-            if(smallAds.isEmpty() || smallAd.compareTo(smallAds.get(smallAds.size() - 1)) > 0) {
-                /*try {
-                    scraper.scrapeUntil(smallAd.getDatetime());
+            if(mostRecentSmallAd == null || smallAd.getDatetime().after(mostRecentSmallAd.getDatetime())) {
+                try {
+                    scraper.scrapeUntil(smallAd.getDatetime(), o -> {
+                        List<SmallAd> ads = (List<SmallAd>) o;
+                        ScraperTabController.this.notify(ads);
+                    });
                 } catch(NullPointerException e) {
                     //This might be necessary if a SocketTimoutException wasn't handled in BlocketScraper
                     e.printStackTrace();
-                }*/
+                }
             } else {
 
             }
