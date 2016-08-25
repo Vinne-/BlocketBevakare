@@ -2,15 +2,20 @@ package gUI.controllers;
 
 import Entites.SmallAd;
 import bevakare.BlocketScraper;
+import javafx.event.*;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
 import org.apache.commons.validator.routines.UrlValidator;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
@@ -18,11 +23,13 @@ import java.util.regex.Pattern;
 /**
  * Created by simpa2k on 2016-08-24.
  */
-public class ScraperTabController {
+public class ScraperTabController implements Initializable {
     private static final String BASE_URL = "https://www.blocket.se/";
-    private boolean run = false;
-    private int scrapeInterval = 60;
+    private static final String START_WATCH = "Bevaka";
+    private static final String END_WATCH = "Avsluta bevakning";
 
+    private int scrapeInterval = 60 * 1000;
+    private Timer timer;
     //private ArrayList<Notification> notifications = new ArrayList<>();
     private ArrayList<SmallAd> smallAds = new ArrayList<>();
 
@@ -30,21 +37,38 @@ public class ScraperTabController {
     private TextField urlInput;
 
     @FXML
-    private void watch() {
-        String url = urlInput.getText();
-        if(urlIsValid(url)) {
-            run = true;
+    private Button watchButton;
 
-            BlocketScraper scraper = new BlocketScraper(url);
+    private EventHandler watchHandler = new EventHandler() {
+        @Override
+        public void handle(Event event) {
+            watchButton.setText(END_WATCH);
+            String url = urlInput.getText();
 
-            Timer timer = new Timer();
-            int delay = 0;
-            int interval = 30 * 1000;
+            if(urlIsValid(url)) {
+                BlocketScraper scraper = new BlocketScraper(url);
 
-            timer.scheduleAtFixedRate(new Scrape(scraper), delay, interval);
-        } else {
-            showInvalidUrlDialog();
+                timer = new Timer();
+                timer.scheduleAtFixedRate(new Scrape(scraper), 0, scrapeInterval);
+            } else {
+                showInvalidUrlDialog();
+            }
+            watchButton.setOnAction(cancelWatchHandler);
         }
+    };
+
+    private EventHandler cancelWatchHandler = new EventHandler() {
+        @Override
+        public void handle(Event event) {
+            timer.cancel();
+            watchButton.setText(START_WATCH);
+            watchButton.setOnAction(watchHandler);
+        }
+    };
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        watchButton.setOnAction(watchHandler);
     }
 
     private boolean urlIsValid(String url) {

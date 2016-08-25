@@ -30,7 +30,7 @@
                         <ComboBox prefWidth="150.0" fx:id="sound"/>
                     </children>
                 </VBox>
-                <Button fx:id="watchButton" mnemonicParsing="false" onAction="#watch" text="Bevaka" GridPane.rowIndex="2" />
+                <Button fx:id="watchButton" mnemonicParsing="false" text="Bevaka" GridPane.rowIndex="2" />
                 <Button fx:id="toSiteButton" mnemonicParsing="false" onAction="#toSite" text="Till sidan" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             </children>
         </GridPane>
