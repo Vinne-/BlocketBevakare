@@ -31,6 +31,11 @@ public class BlocketScraper {
     }
 
 
+    /**
+     * Scrapes the newest small ad. And returns it as a SmallAd object to onScrapingSuccess() callback.
+     *
+     * @param callback The callback to delegate the resulting SmallAd to.
+     */
     public void scrapeNewest(final ScrapingCallback callback) {
 
         Task<SmallAd> task = new Task<SmallAd>() {
@@ -64,6 +69,12 @@ public class BlocketScraper {
 
     }
 
+    /**
+     * Scrapes SmallAds created later then the given date paramater. Returns
+     *
+     * @param date
+     * @param callback
+     */
     public void scrapeUntil(Date date, ScrapingCallback callback) {
 
         Task<List<SmallAd>> task = new Task<List<SmallAd>>() {
@@ -141,7 +152,6 @@ public class BlocketScraper {
         th.start();
 
     }
-
 
 
     private List<SmallAd> extractSmallAds(Document document) {
