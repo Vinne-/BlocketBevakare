@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import notification.Notification;
 import org.apache.commons.validator.routines.UrlValidator;
+import watcher.Watcher;
 
 import java.awt.Desktop;
 import java.net.URI;
@@ -25,9 +26,8 @@ public class ScraperTabController implements Initializable {
     private static final String START_WATCH = "Bevaka";
     private static final String END_WATCH = "Avsluta bevakning";
 
+    private Watcher watcher;
     private int scrapeInterval = 60 * 1000;
-    private Timer timer;
-    //private ArrayList<Notification> notifications = new ArrayList<>();
     private ArrayList<SmallAd> smallAds = new ArrayList<>();
 
     @FXML
@@ -46,10 +46,8 @@ public class ScraperTabController implements Initializable {
             String url = urlInput.getText();
 
             if(urlIsValid(url)) {
-                BlocketScraper scraper = new BlocketScraper(url);
-
-                timer = new Timer();
-                timer.scheduleAtFixedRate(new Scrape(scraper), 0, scrapeInterval);
+                watcher = new Watcher(url, ScraperTabController.this, scrapeInterval);
+                watcher.watch();
             } else {
                 showInvalidUrlDialog();
             }
@@ -60,7 +58,7 @@ public class ScraperTabController implements Initializable {
     private EventHandler cancelWatchHandler = new EventHandler() {
         @Override
         public void handle(Event event) {
-            timer.cancel();
+            watcher.cancel();
             watchButton.setText(START_WATCH);
             watchButton.setOnAction(watchHandler);
         }
@@ -102,14 +100,14 @@ public class ScraperTabController implements Initializable {
 
     }
 
-    protected void notify(List<SmallAd> ads) {
+    public void notify(List<SmallAd> ads) {
         Notification notification = new Notification(ads);
 
         scraperTab.setStyle("-fx-border-color:green");
         scraperTab.setStyle("-fx-background-color:green");
     }
 
-    private class Scrape extends TimerTask {
+    /*private class Scrape extends TimerTask {
 
         private BlocketScraper scraper;
 
@@ -145,6 +143,6 @@ public class ScraperTabController implements Initializable {
             }
         }
 
-    }
+    }*/
 
 }
