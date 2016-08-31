@@ -1,10 +1,10 @@
 package watcher;
 
 import Entites.SmallAd;
-import bevakare.BlocketScraper;
+import bevakare.BlocketScraperCallbackImpl;
 import gUI.controllers.ScraperTabController;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,7 +29,7 @@ public class Watcher {
     }
 
     public void watch() {
-        BlocketScraper scraper = new BlocketScraper(url);
+        BlocketScraperCallbackImpl scraper = new BlocketScraperCallbackImpl(url);
 
         timer = new Timer();
         timer.scheduleAtFixedRate(new Scrape(scraper), 0, scrapeInterval);
@@ -39,10 +39,10 @@ public class Watcher {
         timer.cancel();
     }
 
-    public Date getLastFoundSmallAdDate() {
+    public LocalDateTime getLastFoundSmallAdDate() {
 
         if(lastFoundSmallAd != null) {
-            return lastFoundSmallAd.getDatetime();
+            return lastFoundSmallAd.getLocalDatetime();
         }
         return null;
 
@@ -56,9 +56,9 @@ public class Watcher {
 
     private class Scrape extends TimerTask {
 
-        private BlocketScraper scraper;
+        private BlocketScraperCallbackImpl scraper;
 
-        public Scrape(BlocketScraper scraper) {
+        public Scrape(BlocketScraperCallbackImpl scraper) {
             this.scraper = scraper;
         }
 
@@ -66,7 +66,7 @@ public class Watcher {
         public void run() {
             scraper.scrapeNewest(o -> {
                 SmallAd smallAd = (SmallAd) o;
-                System.out.println(smallAd.getDatetime());
+                System.out.println(smallAd.getLocalDatetime());
 
                 checkAdDatetime(smallAd);
             });
@@ -74,9 +74,9 @@ public class Watcher {
 
         private void checkAdDatetime(SmallAd smallAd) {
 
-            if(lastFoundSmallAd == null || smallAd.getDatetime().after(lastFoundSmallAd.getDatetime())) {
+            if(lastFoundSmallAd == null || smallAd.getLocalDatetime().isAfter(lastFoundSmallAd.getLocalDatetime())) {
                 try {
-                    scraper.scrapeUntil(smallAd.getDatetime(), o -> {
+                    scraper.scrapeUntil(smallAd.getLocalDatetime(), o -> {
                         List<SmallAd> ads = (List<SmallAd>) o;
                         Watcher.this.sendNotification(ads);
                     });
