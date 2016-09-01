@@ -33,7 +33,7 @@ public class Watcher {
     }
 
     /**
-     * Continously makes scrapes.
+     * Continously makes scrapes by using a timer.
      */
 
     public void watch() {
@@ -67,7 +67,7 @@ public class Watcher {
 
     /**
      * Notifies the scraper tab that instantiated the watcher
-     * that new ads have been found
+     * that new ads have been found.
      *
      * @param ads A list of SmallAds returned by the BlocketScraperCallbackImpl
      */
