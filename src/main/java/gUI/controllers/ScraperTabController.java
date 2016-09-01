@@ -1,6 +1,7 @@
 package gUI.controllers;
 
 import Entites.SmallAd;
+import Interfaces.Notifiable;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,7 +19,7 @@ import java.util.regex.Pattern;
 /**
  * Created by simpa2k on 2016-08-24.
  */
-public class ScraperTabController implements Initializable {
+public class ScraperTabController implements Initializable, Notifiable {
     private static final String BASE_URL = "https://www.blocket.se/";
     private static final String START_WATCH = "Bevaka";
     private static final String END_WATCH = "Avsluta bevakning";
@@ -97,7 +98,8 @@ public class ScraperTabController implements Initializable {
 
     }
 
-    public void notify(List<SmallAd> ads) {
+    @Override
+    public void handleNotification(List<SmallAd> ads) {
         Notification notification = new Notification(ads);
 
         scraperTab.setStyle("-fx-border-color:green");

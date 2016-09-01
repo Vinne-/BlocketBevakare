@@ -1,8 +1,8 @@
 package watcher;
 
 import Entites.SmallAd;
+import Interfaces.Notifiable;
 import bevakare.BlocketScraperCallbackImpl;
-import gUI.controllers.ScraperTabController;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,18 +16,19 @@ import java.util.TimerTask;
  * Created by simpa2k on 2016-08-26.
  * @author Simon
  */
+
 public class Watcher {
 
     private String url;
-    private ScraperTabController scraperTab;
+    private Notifiable notifiable;
     private SmallAd lastFoundSmallAd;
     private Timer timer;
     private int scrapeInterval;
 
-    public Watcher(String url, ScraperTabController scraperTab, int scrapeInterval) {
+    public Watcher(String url, Notifiable notifiable, int scrapeInterval) {
 
         this.url = url;
-        this.scraperTab = scraperTab;
+        this.notifiable = notifiable;
         this.scrapeInterval = scrapeInterval;
 
     }
@@ -48,8 +49,9 @@ public class Watcher {
      */
 
     /*
-     * Should probably be handling an exception in the case
-     * that it gets called without the timer being instantiated.
+     * I don't think there will ever be a problem
+     * if this gets called without the timer being
+     * instantiated, but investigate this further.
      */
 
     public void cancel() {
@@ -74,7 +76,7 @@ public class Watcher {
 
     public void sendNotification(List<SmallAd> ads) {
 
-        scraperTab.notify(ads);
+        notifiable.handleNotification(ads);
 
     }
 
@@ -122,9 +124,11 @@ public class Watcher {
                         Watcher.this.sendNotification(ads);
                     });
                 } catch(NullPointerException e) {
-                    //This might be necessary if a SocketTimoutException wasn't handled in BlocketScraper
-                    //This methods needs to actually handle this exception or delegate it to the gui.
-                    //Since it happens pretty frequently it might be motivated to do nothing.
+                    /*
+                     * This might be necessary if a SocketTimoutException wasn't handled in BlocketScraper
+                     * This methods needs to actually handle this exception or delegate it to the gui.
+                     * Since it happens pretty frequently it might be motivated to do nothing.
+                     */
                     e.printStackTrace();
                 }
             } else {
