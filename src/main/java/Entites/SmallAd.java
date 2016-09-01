@@ -1,18 +1,21 @@
 package Entites;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
+ * Object represeneting a undetailed blocket add.
+ *
  * Created by Vincent on 2016-08-24.
  */
 public class SmallAd {
 
     private String id;
     private String title;
-    private Date datetime;
+    private LocalDateTime datetime;
     private int price;
 
-    public SmallAd(String id, String title, Date dateTime, int price) {
+    public SmallAd(String id, String title, LocalDateTime dateTime, int price) {
 
         this.id = id;
         this.title = title;
@@ -30,7 +33,7 @@ public class SmallAd {
         return title;
     }
 
-    public Date getDatetime() {
+    public LocalDateTime getLocalDatetime() {
         return datetime;
     }
 

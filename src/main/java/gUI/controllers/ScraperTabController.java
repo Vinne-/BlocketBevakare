@@ -1,7 +1,6 @@
 package gUI.controllers;
 
 import Entites.SmallAd;
-import bevakare.BlocketScraper;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,8 +12,6 @@ import watcher.Watcher;
 import java.awt.Desktop;
 import java.net.URI;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -119,7 +116,7 @@ public class ScraperTabController implements Initializable {
         public void run() {
             scraper.scrapeNewest(o -> {
                 SmallAd smallAd = (SmallAd) o;
-                System.out.println(smallAd.getDatetime());
+                System.out.println(smallAd.getLocalDatetime());
 
                 checkAdDatetime(smallAd);
             });
@@ -128,9 +125,9 @@ public class ScraperTabController implements Initializable {
         private void checkAdDatetime(SmallAd smallAd) {
             SmallAd mostRecentSmallAd = smallAds.isEmpty() ? null : smallAds.get(smallAds.size() - 1);
 
-            if(mostRecentSmallAd == null || smallAd.getDatetime().after(mostRecentSmallAd.getDatetime())) {
+            if(mostRecentSmallAd == null || smallAd.getLocalDatetime().after(mostRecentSmallAd.getLocalDatetime())) {
                 try {
-                    scraper.scrapeUntil(smallAd.getDatetime(), o -> {
+                    scraper.scrapeUntil(smallAd.getLocalDatetime(), o -> {
                         List<SmallAd> ads = (List<SmallAd>) o;
                         ScraperTabController.this.notify(ads);
                     });
