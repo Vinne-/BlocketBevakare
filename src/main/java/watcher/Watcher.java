@@ -10,6 +10,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
+ * Represents one period of watching a particular url.
+ * Continously makes new scrapes at fixed intervals.
+ *
  * Created by simpa2k on 2016-08-26.
  */
 public class Watcher {
@@ -27,6 +30,10 @@ public class Watcher {
         this.scrapeInterval = scrapeInterval;
 
     }
+
+    /*
+     *
+     */
 
     public void watch() {
         BlocketScraper scraper = new BlocketScraper(url);
