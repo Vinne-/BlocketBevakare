@@ -105,10 +105,10 @@ public class Watcher {
         }
 
         /**
-         * Checks the date of a newly found SmallAd and compares
+         * Checks the date of a SmallAd and compares
          * it with the SmallAd that was last found.
-         * If the new SmallAd was posted at a later date
-         * it requests all SmallAds up to that date.
+         * If the passed SmallAd was posted at a later date
+         * it requests all SmallAds up to that date from the scraper.
          *
          * @param smallAd A SmallAd, the date of which needs to be examined
          */
@@ -123,6 +123,8 @@ public class Watcher {
                     });
                 } catch(NullPointerException e) {
                     //This might be necessary if a SocketTimoutException wasn't handled in BlocketScraper
+                    //This methods needs to actually handle this exception or delegate it to the gui.
+                    //Since it happens pretty frequently it might be motivated to do nothing.
                     e.printStackTrace();
                 }
             } else {
