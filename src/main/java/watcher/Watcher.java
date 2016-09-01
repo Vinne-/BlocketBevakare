@@ -14,6 +14,7 @@ import java.util.TimerTask;
  * Continously makes new scrapes at fixed intervals.
  *
  * Created by simpa2k on 2016-08-26.
+ * @author Simon
  */
 public class Watcher {
 
@@ -31,8 +32,8 @@ public class Watcher {
 
     }
 
-    /*
-     *
+    /**
+     * Continously makes scrapes.
      */
 
     public void watch() {
@@ -41,6 +42,15 @@ public class Watcher {
         timer = new Timer();
         timer.scheduleAtFixedRate(new Scrape(scraper), 0, scrapeInterval);
     }
+
+    /**
+     * Cancels the timer.
+     */
+
+    /*
+     * Should probably be handling an exception in the case
+     * that it gets called without the timer being instantiated.
+     */
 
     public void cancel() {
         timer.cancel();
@@ -55,11 +65,22 @@ public class Watcher {
 
     }
 
+    /**
+     * Notifies the scraper tab that instantiated the watcher
+     * that new ads have been found
+     *
+     * @param ads A list of SmallAds returned by the BlocketScraperCallbackImpl
+     */
+
     public void sendNotification(List<SmallAd> ads) {
 
         scraperTab.notify(ads);
 
     }
+
+    /**
+     * Represents a single scrape of the given url.
+     */
 
     private class Scrape extends TimerTask {
 
@@ -68,6 +89,10 @@ public class Watcher {
         public Scrape(BlocketScraperCallbackImpl scraper) {
             this.scraper = scraper;
         }
+
+        /**
+         * Gets the latest SmallAd and calls checkAdDatetime with it.
+         */
 
         @Override
         public void run() {
@@ -78,6 +103,15 @@ public class Watcher {
                 checkAdDatetime(smallAd);
             });
         }
+
+        /**
+         * Checks the date of a newly found SmallAd and compares
+         * it with the SmallAd that was last found.
+         * If the new SmallAd was posted at a later date
+         * it requests all SmallAds up to that date.
+         *
+         * @param smallAd A SmallAd, the date of which needs to be examined
+         */
 
         private void checkAdDatetime(SmallAd smallAd) {
 
