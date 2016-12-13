@@ -22,13 +22,13 @@ public class BlocketScraperScheduledService extends ScheduledService<List<SmallA
     private LocalDateTime dateTime;
 
     public BlocketScraperScheduledService(String url, LocalDateTime startDateTime) {
-        System.out.println("in FxService Contstuctor");
+        System.out.println("in FxService Constructor");
         this.url = url;
         this.dateTime = startDateTime;
     }
 
     public BlocketScraperScheduledService(String url) {
-        this(url, LocalDateTime.now());
+        this(url, LocalDateTime.now().minusMinutes(20));
     }
 
     @Override

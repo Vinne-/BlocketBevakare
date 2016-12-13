@@ -10,8 +10,8 @@ public class MainFX extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("FXML/mainGui.fxml"));
-        primaryStage.setTitle("Hello World");
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("FXML/scrapeJobOverview.fxml"));
+        primaryStage.setTitle("Blocket Scraper");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

@@ -122,10 +122,11 @@ public class BlocketScraperCore {
         for (Element element : articles) {
             String id = element.id();
             String title = element.select("h1[itemprop='name']").select("a").html();
+            String url = element.select("a[itemprop='url']").attr("href");
             LocalDateTime datetime = extractLocalDatetime(element.select("time[datetime]").attr("datetime"));
             int price = extractPrice(element.select("p[itemprop='price'").html());
 
-            SmallAd ad = new SmallAd(id, title, datetime, price);
+            SmallAd ad = new SmallAd(id, title, url, datetime, price);
             result.add(ad);
         }
 
